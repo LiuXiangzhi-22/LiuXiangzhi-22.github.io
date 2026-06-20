@@ -1,0 +1,20 @@
+[
+  {
+    "name": "个人主页 MyWeb",
+    "date": "2026-06-20",
+    "status": "进行中",
+    "description": "基于 GitHub Pages 的静态个人站点，展示学习笔记、收藏与代码作品，支持明暗主题切换。",
+    "tech": ["HTML", "CSS", "JavaScript"],
+    "url": "https://github.com/LiuXiangzhi-22/MyWeb",
+    "demo": ""
+  },
+  {
+    "name": "Input Method",
+    "date": "2026-06-01",
+    "status": "学习中",
+    "description": "输入法相关学习与实践项目，探索键盘输入、词库与引擎实现。",
+    "tech": ["C++", "Python"],
+    "url": "https://github.com/LiuXiangzhi-22/InputMethod",
+    "demo": ""
+  }
+]

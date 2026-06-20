@@ -1,0 +1,30 @@
+[
+  {
+    "title": "MDN Web Docs",
+    "type": "文档",
+    "url": "https://developer.mozilla.org/zh-CN/",
+    "note": "前端开发最权威的参考文档，查 API 和最佳实践首选。",
+    "date": "2026-06-12"
+  },
+  {
+    "title": "GitHub Pages 官方文档",
+    "type": "文档",
+    "url": "https://docs.github.com/zh/pages",
+    "note": "免费托管静态网站的完整指南，部署和自定义域名都有说明。",
+    "date": "2026-06-18"
+  },
+  {
+    "title": "freeCodeCamp",
+    "type": "课程",
+    "url": "https://www.freecodecamp.org/",
+    "note": "系统的免费编程课程，适合按模块循序渐进学习。",
+    "date": "2026-06-05"
+  },
+  {
+    "title": "Input Method 输入法项目",
+    "type": "项目",
+    "url": "https://github.com/LiuXiangzhi-22/InputMethod",
+    "note": "自己正在学习的输入法相关仓库，值得持续跟进。",
+    "date": "2026-06-20"
+  }
+]
