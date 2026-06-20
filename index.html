@@ -1,96 +1,175 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="紫苏的个人主页 — 学习心得、近期收藏与代码作品" id="metaDesc">
-  <title id="pageTitle">紫苏的主页</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercury's Lab</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav">
-      <a href="#" class="nav-logo" id="navLogo">紫苏</a>
-      <ul class="nav-links">
-        <li><a href="#about" data-i18n="navAbout">关于</a></li>
-        <li><a href="#notes" data-i18n="navNotes">学习心得</a></li>
-        <li><a href="#favorites" data-i18n="navFavorites">近期收藏</a></li>
-        <li><a href="#projects" data-i18n="navProjects">代码作品</a></li>
-      </ul>
-      <div class="nav-actions">
-        <button class="lang-toggle" id="langToggle" aria-label="切换语言">
-          <span class="lang-icon" id="langIcon" aria-hidden="true">EN</span>
-        </button>
-        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-          <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
-          <span class="theme-icon theme-icon-moon" aria-hidden="true">☽</span>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero" id="top">
-      <div class="hero-content">
-        <p class="hero-greeting" id="heroGreeting">你好，我是</p>
-        <h1 class="hero-name" id="profileName">紫苏</h1>
-        <p class="hero-tagline" id="profileTagline">记录学习、收藏与创造</p>
-        <div class="hero-links" id="profileLinks"></div>
-      </div>
-      <div class="hero-decoration" aria-hidden="true">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-      </div>
-    </section>
-
-    <section class="section" id="about">
-      <div class="container">
-        <h2 class="section-title" data-i18n="aboutTitle">关于我</h2>
-        <p class="about-text" id="aboutText"></p>
-      </div>
-    </section>
-
-    <section class="section section-alt" id="notes">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title" data-i18n="notesTitle">学习心得</h2>
-          <p class="section-desc" data-i18n="notesDesc">读书笔记、课程总结与踩坑记录</p>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">☿</div>
+        <div>
+          <h1>Mercury's Lab</h1>
+          <p>Personal digital study room</p>
         </div>
-        <div class="card-grid" id="notesGrid"></div>
       </div>
-    </section>
 
-    <section class="section" id="favorites">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title" data-i18n="favoritesTitle">近期收藏</h2>
-          <p class="section-desc" data-i18n="favoritesDesc">文章、工具、视频与其他值得回看的内容</p>
+      <nav class="nav" aria-label="页面模块">
+        <button class="nav-btn active" data-section="dashboard">🏠 实验室首页</button>
+        <button class="nav-btn" data-section="study">📚 学习计划</button>
+        <button class="nav-btn" data-section="projects">💻 编程作品</button>
+        <button class="nav-btn" data-section="calendar">📅 日期提醒</button>
+        <button class="nav-btn" data-section="gallery">🖼️ 图片展示</button>
+        <button class="nav-btn" data-section="quotes">✨ 随机句子</button>
+        <button class="nav-btn" data-section="memos">📝 备忘录</button>
+        <button class="nav-btn" data-section="recipes">🍜 收集的菜谱</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="themeToggle" class="small-btn">🌙 切换深色/浅色</button>
+        <button id="exportBtn" class="small-btn">⬇️ 导出数据</button>
+        <label class="small-btn import-label">
+          ⬆️ 导入数据
+          <input id="importInput" type="file" accept="application/json" hidden />
+        </label>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section id="dashboard" class="section active">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">Welcome back</p>
+            <h2>这里是你的个人数字学习房间</h2>
+            <p>
+              你可以记录 PTE 模板、编程作品、考试日期、图片、随机鼓励句、备忘录和菜谱。
+              所有模块都可以在网页端增删改。
+            </p>
+          </div>
+          <div class="pixel-room" aria-hidden="true">
+            <div class="window"></div>
+            <div class="desk"></div>
+            <div class="monitor"></div>
+            <div class="plant"></div>
+          </div>
         </div>
-        <div class="card-grid card-grid-compact" id="favoritesGrid"></div>
-      </div>
-    </section>
 
-    <section class="section section-alt" id="projects">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title" data-i18n="projectsTitle">代码作品</h2>
-          <p class="section-desc" data-i18n="projectsDesc">个人项目与实验性代码</p>
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="two-column">
+          <div class="panel">
+            <div class="panel-title">
+              <h3>今日随机鼓励</h3>
+              <button class="ghost-btn" id="randomQuoteBtn">换一句</button>
+            </div>
+            <p id="randomQuoteText" class="quote-text"></p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title">
+              <h3>最近提醒</h3>
+            </div>
+            <div id="upcomingList" class="mini-list"></div>
+          </div>
         </div>
-        <div class="card-grid" id="projectsGrid"></div>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> <span id="footerName">紫苏</span> · <span data-i18n="footerHosted">由 GitHub Pages 托管</span></p>
+      <section id="study" class="section">
+        <section-header title="学习计划 / PTE模板"></section-header>
+        <div class="toolbar">
+          <input id="studySearch" class="search-input" placeholder="搜索学习计划、PTE模板..." />
+          <button class="primary-btn" data-add="study">+ 添加学习内容</button>
+        </div>
+        <div id="studyList" class="card-grid"></div>
+      </section>
+
+      <section id="projects" class="section">
+        <section-header title="编程作品 / GitHub项目"></section-header>
+        <div class="toolbar">
+          <input id="projectsSearch" class="search-input" placeholder="搜索项目..." />
+          <button class="primary-btn" data-add="projects">+ 添加项目</button>
+        </div>
+        <div id="projectsList" class="card-grid"></div>
+      </section>
+
+      <section id="calendar" class="section">
+        <section-header title="日历 / 日期提醒"></section-header>
+        <div class="toolbar">
+          <input id="calendarSearch" class="search-input" placeholder="搜索提醒..." />
+          <button class="primary-btn" data-add="calendar">+ 添加提醒</button>
+        </div>
+        <div id="calendarList" class="card-grid"></div>
+      </section>
+
+      <section id="gallery" class="section">
+        <section-header title="图片展示"></section-header>
+        <div class="tip">
+          图片可以使用网络图片链接，也可以把图片放进项目的 <code>assets</code> 文件夹后填写路径，例如：<code>assets/my-photo.jpg</code>
+        </div>
+        <div class="toolbar">
+          <input id="gallerySearch" class="search-input" placeholder="搜索图片标题或说明..." />
+          <button class="primary-btn" data-add="gallery">+ 添加图片</button>
+        </div>
+        <div id="galleryList" class="gallery-grid"></div>
+      </section>
+
+      <section id="quotes" class="section">
+        <section-header title="随机句子 / 鼓励 / 名言"></section-header>
+        <div class="toolbar">
+          <input id="quotesSearch" class="search-input" placeholder="搜索句子..." />
+          <button class="primary-btn" data-add="quotes">+ 添加句子</button>
+        </div>
+        <div id="quotesList" class="card-grid"></div>
+      </section>
+
+      <section id="memos" class="section">
+        <section-header title="备忘录"></section-header>
+        <div class="toolbar">
+          <input id="memosSearch" class="search-input" placeholder="搜索备忘录..." />
+          <button class="primary-btn" data-add="memos">+ 添加备忘录</button>
+        </div>
+        <div id="memosList" class="card-grid"></div>
+      </section>
+
+      <section id="recipes" class="section">
+        <section-header title="收集的菜谱"></section-header>
+        <div class="toolbar">
+          <input id="recipesSearch" class="search-input" placeholder="搜索菜谱..." />
+          <button class="primary-btn" data-add="recipes">+ 添加菜谱</button>
+        </div>
+        <div id="recipesList" class="card-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="editorDialog" class="editor-dialog">
+    <form method="dialog" id="editorForm">
+      <div class="dialog-header">
+        <h3 id="dialogTitle">添加内容</h3>
+        <button type="button" class="icon-btn" id="closeDialog">✕</button>
+      </div>
+
+      <div id="formFields" class="form-fields"></div>
+
+      <div class="dialog-actions">
+        <button type="button" class="ghost-btn" id="cancelDialog">取消</button>
+        <button type="submit" class="primary-btn">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="sectionHeaderTemplate">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Editable Module</p>
+        <h2></h2>
+      </div>
     </div>
-  </footer>
+  </template>
 
-  <script src="js/main.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
