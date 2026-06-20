@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="个人主页 — 学习心得、近期收藏与代码作品">
-  <title>我的主页</title>
+  <meta name="description" content="紫苏的个人主页 — 学习心得、近期收藏与代码作品" id="metaDesc">
+  <title id="pageTitle">紫苏的主页</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
@@ -13,25 +13,30 @@
 <body>
   <header class="site-header">
     <nav class="nav">
-      <a href="#" class="nav-logo">MyWeb</a>
+      <a href="#" class="nav-logo" id="navLogo">紫苏</a>
       <ul class="nav-links">
-        <li><a href="#about">关于</a></li>
-        <li><a href="#notes">学习心得</a></li>
-        <li><a href="#favorites">近期收藏</a></li>
-        <li><a href="#projects">代码作品</a></li>
+        <li><a href="#about" data-i18n="navAbout">关于</a></li>
+        <li><a href="#notes" data-i18n="navNotes">学习心得</a></li>
+        <li><a href="#favorites" data-i18n="navFavorites">近期收藏</a></li>
+        <li><a href="#projects" data-i18n="navProjects">代码作品</a></li>
       </ul>
-      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-        <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
-        <span class="theme-icon theme-icon-moon" aria-hidden="true">☽</span>
-      </button>
+      <div class="nav-actions">
+        <button class="lang-toggle" id="langToggle" aria-label="切换语言">
+          <span class="lang-icon" id="langIcon" aria-hidden="true">EN</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+          <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
+          <span class="theme-icon theme-icon-moon" aria-hidden="true">☽</span>
+        </button>
+      </div>
     </nav>
   </header>
 
   <main>
     <section class="hero" id="top">
       <div class="hero-content">
-        <p class="hero-greeting">你好，我是</p>
-        <h1 class="hero-name" id="profileName">你的名字</h1>
+        <p class="hero-greeting" id="heroGreeting">你好，我是</p>
+        <h1 class="hero-name" id="profileName">紫苏</h1>
         <p class="hero-tagline" id="profileTagline">记录学习、收藏与创造</p>
         <div class="hero-links" id="profileLinks"></div>
       </div>
@@ -44,18 +49,16 @@
 
     <section class="section" id="about">
       <div class="container">
-        <h2 class="section-title">关于我</h2>
-        <p class="about-text" id="aboutText">
-          在这里写一段简短的自我介绍：你在学什么、对什么感兴趣、这个站点用来做什么。
-        </p>
+        <h2 class="section-title" data-i18n="aboutTitle">关于我</h2>
+        <p class="about-text" id="aboutText"></p>
       </div>
     </section>
 
     <section class="section section-alt" id="notes">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">学习心得</h2>
-          <p class="section-desc">读书笔记、课程总结与踩坑记录</p>
+          <h2 class="section-title" data-i18n="notesTitle">学习心得</h2>
+          <p class="section-desc" data-i18n="notesDesc">读书笔记、课程总结与踩坑记录</p>
         </div>
         <div class="card-grid" id="notesGrid"></div>
       </div>
@@ -64,8 +67,8 @@
     <section class="section" id="favorites">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">近期收藏</h2>
-          <p class="section-desc">文章、工具、视频与其他值得回看的内容</p>
+          <h2 class="section-title" data-i18n="favoritesTitle">近期收藏</h2>
+          <p class="section-desc" data-i18n="favoritesDesc">文章、工具、视频与其他值得回看的内容</p>
         </div>
         <div class="card-grid card-grid-compact" id="favoritesGrid"></div>
       </div>
@@ -74,8 +77,8 @@
     <section class="section section-alt" id="projects">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">代码作品</h2>
-          <p class="section-desc">个人项目与实验性代码</p>
+          <h2 class="section-title" data-i18n="projectsTitle">代码作品</h2>
+          <p class="section-desc" data-i18n="projectsDesc">个人项目与实验性代码</p>
         </div>
         <div class="card-grid" id="projectsGrid"></div>
       </div>
@@ -84,7 +87,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>© <span id="year"></span> <span id="footerName">你的名字</span> · 由 GitHub Pages 托管</p>
+      <p>© <span id="year"></span> <span id="footerName">紫苏</span> · <span data-i18n="footerHosted">由 GitHub Pages 托管</span></p>
     </div>
   </footer>
 
