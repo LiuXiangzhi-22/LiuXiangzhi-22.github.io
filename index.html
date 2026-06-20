@@ -29,6 +29,20 @@
       </nav>
 
       <div class="sidebar-footer">
+        <div class="sync-panel">
+          <div>
+            <strong>云同步</strong>
+            <p id="syncStatus">未连接 Supabase</p>
+          </div>
+          <form id="loginForm" class="sync-form">
+            <input id="emailInput" type="email" placeholder="邮箱登录同步" autocomplete="email" required />
+            <button type="submit" class="small-btn">发送登录链接</button>
+          </form>
+          <div id="syncActions" class="sync-actions" hidden>
+            <button id="syncNowBtn" class="small-btn" type="button">立即同步</button>
+            <button id="signOutBtn" class="small-btn" type="button">退出登录</button>
+          </div>
+        </div>
         <button id="themeToggle" class="small-btn">🌙 切换深色/浅色</button>
         <button id="exportBtn" class="small-btn">⬇️ 导出数据</button>
         <label class="small-btn import-label">
@@ -170,6 +184,7 @@
     </div>
   </template>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>

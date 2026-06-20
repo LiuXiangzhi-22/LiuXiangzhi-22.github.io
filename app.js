@@ -1,5 +1,8 @@
 const STORAGE_KEY = "mercurys-lab-data-v1";
 const THEME_KEY = "mercurys-lab-theme";
+const SUPABASE_URL = "https://oropnamwxurohrfwepza.supabase.co";
+const SUPABASE_KEY = "sb_publishable_qwOlSwK3Rrq-zOgQa7VTbg_df6NzuEC";
+const CLOUD_TABLE = "mercury_lab_data";
 
 const defaultData = {
   study: [
@@ -270,6 +273,10 @@ const moduleConfig = {
 
 let data = loadData();
 let editing = { module: null, id: null };
+let cloudClient = null;
+let currentUser = null;
+let cloudReady = false;
+let saveTimer = null;
 
 function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -286,6 +293,122 @@ function loadData() {
 function saveData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data, null, 2));
   renderAll();
+  queueCloudSave();
+}
+
+function setSyncStatus(message) {
+  const target = document.getElementById("syncStatus");
+  if (target) target.textContent = message;
+}
+
+function setCloudUI(isSignedIn) {
+  document.getElementById("loginForm").hidden = isSignedIn;
+  document.getElementById("syncActions").hidden = !isSignedIn;
+}
+
+function hasLocalData() {
+  return Boolean(localStorage.getItem(STORAGE_KEY));
+}
+
+function normalizeCloudData(payload) {
+  if (!payload || typeof payload !== "object") return structuredClone(defaultData);
+  return { ...structuredClone(defaultData), ...payload };
+}
+
+function queueCloudSave() {
+  if (!cloudReady || !currentUser) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveCloudData();
+  }, 500);
+}
+
+async function saveCloudData() {
+  if (!cloudClient || !currentUser) return;
+
+  try {
+    setSyncStatus("正在保存到云端...");
+    const { error } = await cloudClient
+      .from(CLOUD_TABLE)
+      .upsert({
+        user_id: currentUser.id,
+        payload: data,
+        updated_at: new Date().toISOString()
+      }, { onConflict: "user_id" });
+
+    if (error) throw error;
+    setSyncStatus(`已同步：${new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" })}`);
+  } catch (error) {
+    console.error(error);
+    setSyncStatus("云端保存失败，请检查 Supabase 表和权限");
+  }
+}
+
+async function loadCloudData() {
+  if (!cloudClient || !currentUser) return;
+
+  try {
+    setSyncStatus("正在读取云端数据...");
+    const { data: row, error } = await cloudClient
+      .from(CLOUD_TABLE)
+      .select("payload, updated_at")
+      .eq("user_id", currentUser.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (row?.payload) {
+      data = normalizeCloudData(row.payload);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data, null, 2));
+      renderAll();
+      renderRandomQuote();
+      setSyncStatus(`云端已连接：${currentUser.email}`);
+      return;
+    }
+
+    if (hasLocalData()) {
+      await saveCloudData();
+      setSyncStatus("已把本机数据上传到云端");
+    } else {
+      await saveCloudData();
+      setSyncStatus("已创建云端数据");
+    }
+  } catch (error) {
+    console.error(error);
+    setSyncStatus("云端读取失败，请先确认已创建数据表");
+  }
+}
+
+async function initCloudSync() {
+  if (!window.supabase?.createClient) {
+    setSyncStatus("Supabase 脚本加载失败");
+    return;
+  }
+
+  cloudClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const { data: sessionData } = await cloudClient.auth.getSession();
+  currentUser = sessionData.session?.user || null;
+  cloudReady = Boolean(currentUser);
+  setCloudUI(cloudReady);
+
+  if (currentUser) {
+    await loadCloudData();
+  } else {
+    setSyncStatus("输入邮箱登录后开启云同步");
+  }
+
+  cloudClient.auth.onAuthStateChange(async (_event, session) => {
+    currentUser = session?.user || null;
+    cloudReady = Boolean(currentUser);
+    setCloudUI(cloudReady);
+
+    if (currentUser) {
+      await loadCloudData();
+    } else {
+      setSyncStatus("已退出云同步");
+    }
+  });
 }
 
 function cardActions(moduleName, id) {
@@ -432,9 +555,8 @@ function handleSave(event) {
     data[moduleName].unshift(item);
   }
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data, null, 2));
   closeEditor();
-  renderAll();
+  saveData();
 }
 
 function deleteItem(moduleName, id) {
@@ -557,6 +679,34 @@ function initEvents() {
   document.getElementById("randomQuoteBtn").addEventListener("click", renderRandomQuote);
   document.getElementById("exportBtn").addEventListener("click", exportData);
   document.getElementById("importInput").addEventListener("change", event => importData(event.target.files[0]));
+  document.getElementById("syncNowBtn").addEventListener("click", saveCloudData);
+  document.getElementById("signOutBtn").addEventListener("click", async () => {
+    if (!cloudClient) return;
+    await cloudClient.auth.signOut();
+  });
+  document.getElementById("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!cloudClient) return;
+
+    const email = document.getElementById("emailInput").value.trim();
+    if (!email) return;
+
+    setSyncStatus("正在发送登录链接...");
+    const { error } = await cloudClient.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: window.location.origin + window.location.pathname
+      }
+    });
+
+    if (error) {
+      console.error(error);
+      setSyncStatus("登录链接发送失败，请检查 Supabase Auth 设置");
+      return;
+    }
+
+    setSyncStatus("登录链接已发送，请打开邮箱完成登录");
+  });
 
   document.getElementById("themeToggle").addEventListener("click", () => {
     document.documentElement.classList.toggle("light");
@@ -575,3 +725,4 @@ initSectionHeaders();
 initEvents();
 renderAll();
 renderRandomQuote();
+initCloudSync();

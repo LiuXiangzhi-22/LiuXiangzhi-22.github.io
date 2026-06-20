@@ -29,15 +29,49 @@
 
 ## 重要说明
 
-这个 demo 是纯静态网页，没有数据库。
+这个网页是纯静态网页，发布在 GitHub Pages 上；数据同步使用 Supabase。
 
-你在网页端添加、修改、删除的内容会保存在当前浏览器的 `localStorage` 中。
+未登录时，网页端添加、修改、删除的内容会保存在当前浏览器的 `localStorage` 中。
 
-这意味着：
+登录 Supabase 后，网页会把数据保存到云端表 `mercury_lab_data`，同一个邮箱账号在不同设备登录后可以看到同一份内容。
 
-- 换电脑或换浏览器后，看不到之前编辑的内容。
-- 清理浏览器缓存可能会删除数据。
-- 建议经常使用左侧的“导出数据”保存 JSON 备份。
-- 在新设备上可以用“导入数据”恢复内容。
+## Supabase 设置
 
-如果以后想实现真正的跨设备同步，需要接入后端数据库，例如 Firebase、Supabase、GitHub API 或自己写服务器。
+在 Supabase 项目的 SQL Editor 里运行下面这段 SQL：
+
+```sql
+create table if not exists public.mercury_lab_data (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  payload jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.mercury_lab_data enable row level security;
+
+create policy "Users can read their own Mercury Lab data"
+on public.mercury_lab_data
+for select
+to authenticated
+using (auth.uid() = user_id);
+
+create policy "Users can insert their own Mercury Lab data"
+on public.mercury_lab_data
+for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+create policy "Users can update their own Mercury Lab data"
+on public.mercury_lab_data
+for update
+to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+```
+
+然后在 Supabase 的 Authentication 设置里确认：
+
+- Email 登录已开启。
+- Site URL 设置为你的 GitHub Pages 地址，例如 `https://liuxiangzhi-22.github.io`。
+- Redirect URLs 里也加入同一个地址。
+
+建议仍然偶尔使用左侧的“导出数据”保存 JSON 备份。

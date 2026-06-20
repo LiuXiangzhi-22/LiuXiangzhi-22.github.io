@@ -142,6 +142,47 @@ button {
   gap: 8px;
 }
 
+.sync-panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+}
+
+.sync-panel strong {
+  display: block;
+  font-size: 15px;
+}
+
+.sync-panel p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.sync-form,
+.sync-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.sync-form input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  background: var(--panel);
+  padding: 10px 12px;
+  outline: none;
+}
+
+.sync-form input:focus {
+  border-color: var(--accent);
+}
+
 .small-btn {
   width: 100%;
   text-align: center;
